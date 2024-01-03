@@ -10,7 +10,7 @@ const firebaseConfig = {
    projectId: "medical-care-hospital",
    storageBucket: "medical-care-hospital.appspot.com",
    messagingSenderId: "407906982548",
-   appId: "1:407906982548:web:def904e61197fb4cbc3281"
+   appId: "1:407906982548:web:def904e61197fb4cbc3281",
 };
 
 // Initialize Firebase
