@@ -22,11 +22,9 @@ const Register = ({ handleChange, change }) => {
          console.log(result)
          await updateUserProfile(name, imageData?.data?.display_url);
          toast.success('Sign up Successfull');
-         setLoading(false);
       } catch (error) {
          if (error.message) {
             toast.error('Email Already in Use.');
-            setLoading(false);
          }
       }
    }
