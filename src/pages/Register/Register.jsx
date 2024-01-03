@@ -9,8 +9,9 @@ import { imageUpload } from '../../api/utilities';
 const Register = ({ handleChange, change }) => {
    const { createUser, } = useAuth()
    const { register, handleSubmit,
-      // formState: { errors }
+      formState: { errors }
    } = useForm();
+   console.log(errors)
    const onSubmit = async (data) => {
       const { name, email, password } = data;
       const image = data?.image[0]
