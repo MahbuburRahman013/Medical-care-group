@@ -1,37 +1,44 @@
 
 import { useForm } from 'react-hook-form';
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { imageUpload } from '../../api/utilities';
 import SocialLogin from '../Login/SocialLogin';
+import { useState } from 'react';
+import { TbFidgetSpinner } from 'react-icons/tb'
+import { saveUser } from '../../api/auth';
 
 
-const Register = ({ handleChange, change }) => {
-
+const Register = ({ handleChange, change, setIsOpen }) => {
+   const [loading, setLoading] = useState(false)
    const { createUser, updateUserProfile } = useAuth()
 
-   const { register, handleSubmit,
-      formState: { errors }
-   } = useForm();
 
-   console.log(errors)
+   const { register, handleSubmit, reset } = useForm();
 
    const onSubmit = async (data) => {
       const { name, email, password } = data;
       const image = data?.image[0]
+      setLoading(true)
       try {
          // Upload image
          const imageData = await imageUpload(image);
+         const imageURL = imageData?.data?.display_url
          // User Registration
          const result = await createUser(email, password);
-         console.log(result)
-         await updateUserProfile(name, imageData?.data?.display_url);
+
+         await updateUserProfile(name, imageURL);
+
+         await saveUser(result?.user, name, imageURL)
+
          toast.success('Sign up Successfully');
+         reset()
+         setLoading(false)
+         setIsOpen(false)
       } catch (error) {
          if (error.message) {
             toast.error('Email Already in Use.');
+            setLoading(false)
          }
       }
    }
@@ -113,7 +120,9 @@ const Register = ({ handleChange, change }) => {
                         />
                      </div>
                      <div className=' col-span-2'>
-                        <input type='submit' value="Sign Up" className='w-full cursor-pointer px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-900 focus:outline-none focus:ring-blue-200 focus:ring-4' />
+                        <button type='submit' value="Sign Up" className='w-full cursor-pointer px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-900 focus:outline-none focus:ring-blue-200 focus:ring-4'>
+                           {loading ? <TbFidgetSpinner className='animate-spin mx-auto' /> : "Sign Up"}
+                        </button>
                      </div>
                   </form>
                   <div className='flex flex-col space-y-5'>

@@ -1,15 +1,26 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import Register from '../Register/Register';
 import useAuth from '../../hooks/useAuth';
 import SocialLogin from './SocialLogin';
 import toast from 'react-hot-toast';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { TbFidgetSpinner } from 'react-icons/tb'
+import { Tooltip } from '@mui/material';
+
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Login as LoggedIn, Person2 } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import { MdDashboard } from "react-icons/md";
+const userIcon = 'https://i.ibb.co/6HtdFTk/585e4bf3cb11b227491c339a.png'
 
 const style = {
    position: 'absolute',
@@ -24,31 +35,30 @@ const style = {
 
 const Login = () => {
    let [isOpen, setIsOpen] = useState(false);
-
+   const [loading, setLoading] = useState(false)
    const [open, setOpen] = useState(false);
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
 
-   const { logOut, signIn, resetPassword,user } = useAuth()
+   const { logOut, signIn, resetPassword, user } = useAuth()
 
    const [change, setChange] = useState()
-   const { register, handleSubmit,
-      formState: { errors }
-   } = useForm();
+   const { register, handleSubmit, reset } = useForm();
 
    const onSubmit = async (data) => {
-   
       const { email, password } = data;
-     
-
+      setLoading(false)
       try {
          await signIn(email, password)
          toast.success("Login Successfully")
+         reset()
+         setLoading(false)
+         setIsOpen(false);
       } catch (error) {
-         toast.error(error)
+         toast.error(error.message)
+         setLoading(false)
       }
    }
-   // console.log(errors);
 
    function closeModal() {
       setIsOpen(false);
@@ -61,6 +71,18 @@ const Login = () => {
    const handleChange = () => {
       setChange(!change)
    }
+
+   // ==================================
+   const [anchorElUser, setAnchorElUser] = useState(null);
+
+   const handleOpenUserMenu = (event) => {
+      setAnchorElUser(event.currentTarget);
+   };
+
+   const handleCloseUserMenu = () => {
+      setAnchorElUser(null);
+   };
+   // ==================================
 
 
    const handleResetPassword = async (e) => {
@@ -81,22 +103,68 @@ const Login = () => {
    return (
       <>
          <div className='inset-0 flex items-center justify-center'>
-            {
-               user ?
-                  <button
-                     type='button'
-                     onClick={logOut}
-                     className='rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
-                     LogOut
-                  </button> :
-                  <button
-                     type='button'
-                     onClick={openModal}
-                     className='rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
-                     Login
-                  </button>
-            }
+            <Box sx={{ flexGrow: 0 }}>
+               <Tooltip title="Open Profile">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                     <Avatar alt="User Pic" src={user?.photoURL ? user?.photoURL : userIcon} />
+                  </IconButton>
+               </Tooltip>
+               <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                     vertical: 'top',
+                     horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                     vertical: 'top',
+                     horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+               >
+                  {
+                     user && user?.email ?
+                        <Box>
+                           <MenuItem sx={{ display: 'block' }} onClick={handleCloseUserMenu}>
+                              <Typography sx={{ paddingLeft: '5px', py: 1, display: 'flex', justifyContent: 'left', alignItems: 'center', ":hover": { backgroundColor: "#001B79", color: "white", borderRadius: 2 } }} textAlign="center">
+                                 <Person2 />
+                                 <span className='pl-3'>{user?.displayName}</span>
+                              </Typography>
 
+                              <Link to="/dashboard" className='flex justify-start items-center gap-2 px-2 hover:bg-[#001B79] hover:text-white py-2 rounded-md'>
+                                 <MdDashboard />
+                                 Dashboard
+                              </Link>
+                              <Button
+                                 onClick={logOut}
+                                 sx={{
+                                    display: 'flex',
+                                    justifyContent: 'start',
+                                    alignItems: 'center',
+                                    color: 'red',
+                                    fontWeight: '600',
+                                    width: '100%',
+                                    '&:hover': {
+                                       backgroundColor: '#001B79',
+                                    },
+                                    marginTop: '5px'
+                                 }}
+                              >
+                                 <LogoutIcon />
+                                 <span className='pl-2'>LogOut</span>
+                              </Button>
+                           </MenuItem>
+                        </Box> : <MenuItem sx={{ display: 'grid' }} onClick={handleCloseUserMenu}>
+                           <Button onClick={openModal} sx={{ fontWeight: 700, ":hover": { color: 'white', backgroundColor: "#1f2b6c" } }}>
+                              <LoggedIn sx={{ mr: 1 }} />Login
+                           </Button>
+                        </MenuItem>
+                  }
+               </Menu>
+            </Box>
          </div>
 
          <Transition appear show={isOpen} as={Fragment}>
@@ -112,7 +180,7 @@ const Login = () => {
                   <div className='fixed inset-0 bg-black/25' />
                </Transition.Child>
 
-               <div className='fixed inset-0 overflow-y-auto'>
+               <div className='fixed inset-0 overflow-y-scroll'>
                   <div className='flex min-h-full items-center justify-center text-center'>
                      <Transition.Child
                         as={Fragment}
@@ -122,7 +190,8 @@ const Login = () => {
                         leave='ease-in duration-200'
                         leaveFrom='opacity-100 scale-100'
                         leaveTo='opacity-0 scale-95'>
-                        <Dialog.Panel className='w-96 md:w-full relative flex items-center max-w-3xl h-[510px] transform overflow-y-scroll md:overflow-y-hidden rounded-2xl bg-white md:p-6 text-left align-middle shadow-xl transition-all'>
+
+                        <Dialog.Panel className='w-full mx-5 md:mx-0 md:w-full relative flex items-center max-w-3xl h-[100vh]  md:h-[510px] transform overflow-y-scroll md:overflow-y-hidden rounded-2xl bg-white md:p-6 text-left align-middle shadow-xl transition-all'>
                            {/* Login */}
                            <div className={`flex items-center absolute bg-gray-100 lg:justify-center ${change ? "hidden" : "visible"}`}>
                               <div className='flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1'>
@@ -203,7 +272,9 @@ const Login = () => {
                                           </label>
                                        </div>
                                        <div>
-                                          <input type='submit' value="Login" className='w-full cursor-pointer px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-900 focus:outline-none focus:ring-blue-200 focus:ring-4' />
+                                          <button type='submit' value="Login" className='w-full cursor-pointer px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-900 focus:outline-none focus:ring-blue-200 focus:ring-4' >
+                                             {loading ? <TbFidgetSpinner className='animate-spin mx-auto' /> : "Sign In"}
+                                          </button>
                                        </div>
                                        <div className='flex flex-col space-y-5'>
                                           <span className='flex items-center justify-center space-x-2'>
@@ -219,11 +290,8 @@ const Login = () => {
                                  </div>
                               </div>
                            </div>
-
-
-                          
-                           <Register handleChange={handleChange} change={change} />
-                           
+                           {/* Registration */}
+                           <Register handleChange={handleChange} change={change} setIsOpen={setIsOpen} />
 
                         </Dialog.Panel>
                      </Transition.Child>
