@@ -8,8 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const Footer = () => {
    return (
       <>
-         <div className="bg-[#1b2661] text-[#BFD2F8]">
-            <div className="container flex justify-center gap-16 py-10 mx-auto">
+         <div className="bg-[#1b2661] px-5 lg:px-0 text-[#BFD2F8]">
+            <div className="container flex lg:flex-row flex-col  justify-center gap-16 py-10 mx-auto">
                <div>
                   <h1 className="uppercase text-3xl text-[#BFD2F8] font-semibold">Medical Care</h1>
                   <p className="pt-5">Leading the Way in Medical

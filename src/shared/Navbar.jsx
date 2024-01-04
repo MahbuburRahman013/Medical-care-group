@@ -50,7 +50,7 @@ function Navbar() {
 			<UpNavbar></UpNavbar>
 			<Box sx={{ display: 'flex'}}>
 				<CssBaseline />
-				<AppBar sx={{ backgroundColor: '#1F2B6C' , marginTop:'60px'}} component="nav">
+				<AppBar sx={{ backgroundColor: '#1F2B6C' , marginTop:{xs: '91px', sm: '60px'}}} component="nav">
 					<Toolbar className='container mx-auto'>
 						<Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
 							{navItems.map((item) => (
