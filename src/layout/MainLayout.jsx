@@ -7,7 +7,7 @@ const MainLayout = () => {
 		<>
 			<div>
 				<Navbar/>
-				<Outlet />
+				<div className='md:mt-[64px] mt-[58px]'><Outlet /></div>
 				<Footer />
 			</div>
 		</>
