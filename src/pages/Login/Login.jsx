@@ -33,13 +33,13 @@ const Login = () => {
 
    const [change, setChange] = useState()
    const { register, handleSubmit,
-      // formState: { errors }
+      formState: { errors }
    } = useForm();
 
    const onSubmit = async (data) => {
-      console.log(data)
+   
       const { email, password } = data;
-      setEmail(email)
+     
 
       try {
          await signIn(email, password)
