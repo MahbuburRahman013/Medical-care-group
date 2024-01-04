@@ -5,14 +5,49 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import Register from '../Register/Register';
 import useAuth from '../../hooks/useAuth';
+import SocialLogin from './SocialLogin';
+import toast from 'react-hot-toast';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+
+const style = {
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: 400,
+   bgcolor: 'background.paper',
+   boxShadow: 24,
+   p: 4,
+};
+
 const Login = () => {
    let [isOpen, setIsOpen] = useState(false);
-   const { logOut, user } = useAuth()
+
+   const [open, setOpen] = useState(false);
+   const handleOpen = () => setOpen(true);
+   const handleClose = () => setOpen(false);
+
+   const { logOut, signIn, resetPassword,user } = useAuth()
+
    const [change, setChange] = useState()
    const { register, handleSubmit,
       // formState: { errors }
    } = useForm();
-   const onSubmit = (data) => console.log(data);
+
+   const onSubmit = async (data) => {
+      console.log(data)
+      const { email, password } = data;
+      setEmail(email)
+
+      try {
+         await signIn(email, password)
+         toast.success("Login Successfully")
+      } catch (error) {
+         toast.error(error)
+      }
+   }
    // console.log(errors);
 
    function closeModal() {
@@ -27,6 +62,22 @@ const Login = () => {
       setChange(!change)
    }
 
+
+   const handleResetPassword = async (e) => {
+      e.preventDefault();
+      const form = e.target
+      const email = form.resetEmail.value;
+
+      try {
+         await resetPassword(email);
+         toast.success("Password reset email sent successfully. Check your email.");
+
+         // Reset the form
+         form.reset();
+      } catch (error) {
+         toast.error(error.message);
+      }
+   };
    return (
       <>
          <div className='inset-0 flex items-center justify-center'>
@@ -71,7 +122,7 @@ const Login = () => {
                         leave='ease-in duration-200'
                         leaveFrom='opacity-100 scale-100'
                         leaveTo='opacity-0 scale-95'>
-                        <Dialog.Panel className='w-96 md:w-full relative flex max-w-3xl h-[560px] transform overflow-y-scroll md:overflow-y-hidden rounded-2xl bg-white md:p-6 text-left align-middle shadow-xl transition-all'>
+                        <Dialog.Panel className='w-96 md:w-full relative flex items-center max-w-3xl h-[510px] transform overflow-y-scroll md:overflow-y-hidden rounded-2xl bg-white md:p-6 text-left align-middle shadow-xl transition-all'>
                            {/* Login */}
                            <div className={`flex items-center absolute bg-gray-100 lg:justify-center ${change ? "hidden" : "visible"}`}>
                               <div className='flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1'>
@@ -90,11 +141,11 @@ const Login = () => {
                                     </p>
                                     <p className='mt-6 text-sm text-center text-gray-300'>
                                        Read our{' '}
-                                       <a href='#' className='underline'>
+                                       <a href='#' className='underline text-white'>
                                           terms
                                        </a>{' '}
                                        and{' '}
-                                       <a href='#' className='underline'>
+                                       <a href='#' className='underline text-white'>
                                           conditions
                                        </a>
                                     </p>
@@ -113,9 +164,10 @@ const Login = () => {
                                           </label>
                                           <input
                                              type='text'
+                                             onChange={(e) => console.log(e.target)}
                                              placeholder='Email'
                                              className='px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200'
-                                             {...register('Email', { pattern: /^\S+@\S+$/i })}
+                                             {...register('email', { pattern: /^\S+@\S+$/i })}
                                           />
                                        </div>
                                        <div className='flex flex-col space-y-1'>
@@ -125,17 +177,15 @@ const Login = () => {
                                                 className='text-sm font-semibold text-gray-500'>
                                                 Password
                                              </label>
-                                             <a
-                                                href='#'
-                                                className='text-sm text-blue-600 hover:underline focus:text-blue-800'>
+                                             <button onClick={handleOpen} className='text-sm text-blue-600 hover:underline focus:text-blue-800'>
                                                 Forgot Password?
-                                             </a>
+                                             </button>
                                           </div>
                                           <input
                                              type='password'
                                              placeholder='Password'
                                              className='px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200'
-                                             {...register('Password', {
+                                             {...register('password', {
                                                 required: true,
                                                 minLength: 6,
                                                 maxLength: 12,
@@ -145,7 +195,7 @@ const Login = () => {
                                           />
                                        </div>
                                        <div className='flex items-center space-x-2'>
-                                          <input type="checkbox" placeholder="Remember Me" required className='w-4 h-4 transition duration-300 rounded focus:ring-2 focus:ring-offset-0 focus:outline-none focus:ring-blue-200' {...register("rememberMe")} />
+                                          <input type="checkbox" placeholder="Remember Me" className='w-4 h-4 transition duration-300 rounded focus:ring-2 focus:ring-offset-0 focus:outline-none focus:ring-blue-200' {...register("rememberMe")} />
                                           <label
                                              htmlFor='remember'
                                              className='text-sm font-semibold text-gray-500'>
@@ -163,43 +213,43 @@ const Login = () => {
                                              </span>
                                              <span className='h-px bg-gray-400 w-14'></span>
                                           </span>
-                                          <div className='flex flex-col space-y-4'>
-                                             <a
-                                                href='#'
-                                                className='flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-gray-800 rounded-md group hover:bg-gray-800 focus:outline-none'>
-                                                <span>
-                                                   <FaGithub className='w-5 h-5 text-gray-800 fill-current group-hover:text-white' />
-                                                </span>
-                                                <span className='text-sm font-medium text-gray-800 group-hover:text-white'>
-                                                   Github
-                                                </span>
-                                             </a>
-                                             <a
-                                                href='#'
-                                                className='flex items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-500 rounded-md group hover:bg-blue-500 focus:outline-none'>
-                                                <span>
-                                                   <FcGoogle className='text-blue-500 text-xl group-hover:text-white' />
-                                                </span>
-                                                <span className='text-sm font-medium text-blue-500 group-hover:text-white'>
-                                                   Google
-                                                </span>
-                                             </a>
-                                          </div>
+                                          <SocialLogin />
                                        </div>
                                     </form>
                                  </div>
                               </div>
                            </div>
 
+
                           
                            <Register handleChange={handleChange} change={change} />
                            
+
                         </Dialog.Panel>
                      </Transition.Child>
                   </div>
                </div>
             </Dialog>
          </Transition>
+         <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+         >
+            <Box className="rounded-lg" sx={style}>
+               <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Reset Password
+               </Typography>
+               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+
+               </Typography>
+               <form onSubmit={handleResetPassword}>
+                  <input type="text" name="resetEmail" id="" className='border w-full p-2 rounded-md' placeholder='Type Your Email' />
+                  <input type="submit" value="Reset" className='w-full mt-2 bg-blue-500 text-white font-semibold p-1 hover:bg-blue-900 cursor-pointer' />
+               </form>
+            </Box>
+         </Modal>
       </>
    );
 };

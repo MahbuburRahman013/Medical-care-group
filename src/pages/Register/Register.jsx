@@ -5,11 +5,15 @@ import { FaGithub } from "react-icons/fa";
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { imageUpload } from '../../api/utilities';
+import SocialLogin from '../Login/SocialLogin';
+
 
 const Register = ({ handleChange, change }) => {
-   const { createUser, } = useAuth()
+
+   const { createUser, updateUserProfile } = useAuth()
+
    const { register, handleSubmit,
-      formState: { errors }
+      // formState: { errors }
    } = useForm();
 
    console.log(errors)
@@ -50,7 +54,7 @@ const Register = ({ handleChange, change }) => {
                         </label>
                         <input
                            type='text'
-                           placeholder='Email'
+                           placeholder='Name'
                            className='px-4 py-2 transition duration-300 border border-gray-300 rounded focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200'
                            {...register('name')}
                         />
@@ -108,16 +112,8 @@ const Register = ({ handleChange, change }) => {
                            })}
                         />
                      </div>
-                     <div className='flex items-center  col-span-2 space-x-2'>
-                        <input type="checkbox" placeholder="Remember Me" required className='w-4 h-4 transition duration-300 rounded focus:ring-2 focus:ring-offset-0 focus:outline-none focus:ring-blue-200' {...register("rememberMe")} />
-                        <label
-                           htmlFor='remember'
-                           className='text-sm font-semibold text-gray-500'>
-                           Remember me
-                        </label>
-                     </div>
                      <div className=' col-span-2'>
-                        <input type='submit' value="Login" className='w-full cursor-pointer px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-900 focus:outline-none focus:ring-blue-200 focus:ring-4' />
+                        <input type='submit' value="Sign Up" className='w-full cursor-pointer px-4 py-2 text-lg font-semibold text-white transition-colors duration-300 bg-blue-500 rounded-md shadow hover:bg-blue-900 focus:outline-none focus:ring-blue-200 focus:ring-4' />
                      </div>
                   </form>
                   <div className='flex flex-col space-y-5'>
@@ -128,26 +124,7 @@ const Register = ({ handleChange, change }) => {
                         </span>
                         <span className='h-px bg-gray-400 w-14 '></span>
                      </span>
-                     <div className='flex flex-col md:flex-row gap-5'>
-                        <button
-                           className='flex w-full items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-gray-800 rounded-md group hover:bg-gray-800 focus:outline-none'>
-                           <span>
-                              <FaGithub className='w-5 h-5 text-gray-800 fill-current group-hover:text-white' />
-                           </span>
-                           <span className='text-sm font-medium text-gray-800 group-hover:text-white'>
-                              Github
-                           </span>
-                        </button>
-                        <button
-                           className='flex w-full items-center justify-center px-4 py-2 space-x-2 transition-colors duration-300 border border-blue-500 rounded-md group hover:bg-blue-500 focus:outline-none'>
-                           <span>
-                              <FcGoogle className='text-blue-500 text-xl group-hover:text-white' />
-                           </span>
-                           <span className='text-sm font-medium text-blue-500 group-hover:text-white'>
-                              Google
-                           </span>
-                        </button>
-                     </div>
+                     <SocialLogin />
                      <p className='py-5 text-center flex items-center justify-center'>Already Have an Account! <span><button onClick={handleChange} className='py-1 px-3 bg-sky-600 rounded-3xl text-white ml-2 hover:bg-sky-900'>Login</button></span></p>
                   </div>
                </div>
