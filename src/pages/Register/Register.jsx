@@ -13,7 +13,7 @@ const Register = ({ handleChange, change }) => {
    const { createUser, updateUserProfile } = useAuth()
 
    const { register, handleSubmit,
-      // formState: { errors }
+      formState: { errors }
    } = useForm();
 
    console.log(errors)
