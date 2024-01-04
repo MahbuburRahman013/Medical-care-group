@@ -1,6 +1,8 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import Register from '../Register/Register';
 import useAuth from '../../hooks/useAuth';
 import SocialLogin from './SocialLogin';
@@ -22,11 +24,13 @@ const style = {
 
 const Login = () => {
    let [isOpen, setIsOpen] = useState(false);
+
    const [open, setOpen] = useState(false);
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
 
-   const { logOut, signIn, resetPassword } = useAuth()
+   const { logOut, signIn, resetPassword,user } = useAuth()
+
    const [change, setChange] = useState()
    const { register, handleSubmit,
       // formState: { errors }
@@ -76,19 +80,23 @@ const Login = () => {
    };
    return (
       <>
-         <div className='fixed inset-0 flex items-center justify-center'>
-            <button
-               type='button'
-               onClick={openModal}
-               className='rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
-               Open dialog
-            </button>
-            <button
-               type='button'
-               onClick={logOut}
-               className='rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
-               LogOut
-            </button>
+         <div className='inset-0 flex items-center justify-center'>
+            {
+               user ?
+                  <button
+                     type='button'
+                     onClick={logOut}
+                     className='rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
+                     LogOut
+                  </button> :
+                  <button
+                     type='button'
+                     onClick={openModal}
+                     className='rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
+                     Login
+                  </button>
+            }
+
          </div>
 
          <Transition appear show={isOpen} as={Fragment}>
@@ -211,8 +219,12 @@ const Login = () => {
                                  </div>
                               </div>
                            </div>
-                           {/* Registration */}
+
+
+                          
                            <Register handleChange={handleChange} change={change} />
+                           
+
                         </Dialog.Panel>
                      </Transition.Child>
                   </div>

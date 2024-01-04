@@ -13,6 +13,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import UpNavbar from './UpNavbar';
+import Login from '../pages/Login/Login';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About us', 'Service', 'Doctor', 'News', 'Contact'];
@@ -73,6 +74,10 @@ function Navbar() {
 
 						<div className="hidden md:block">
 							<Button sx={{ borderRadius: '25px', backgroundColor: '#BFD2F8', color: 'black' }} variant="contained">Contained</Button>
+						</div>
+
+						<div className='ml-10'>
+							<Login></Login>
 						</div>
 
 					</Toolbar>

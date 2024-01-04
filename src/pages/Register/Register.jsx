@@ -1,12 +1,12 @@
 
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { imageUpload } from '../../api/utilities';
 import SocialLogin from '../Login/SocialLogin';
+
 
 const Register = ({ handleChange, change }) => {
 
@@ -15,7 +15,9 @@ const Register = ({ handleChange, change }) => {
    const { register, handleSubmit,
       // formState: { errors }
    } = useForm();
-   // console.log(errors)
+
+   console.log(errors)
+
    const onSubmit = async (data) => {
       const { name, email, password } = data;
       const image = data?.image[0]
@@ -26,7 +28,7 @@ const Register = ({ handleChange, change }) => {
          const result = await createUser(email, password);
          console.log(result)
          await updateUserProfile(name, imageData?.data?.display_url);
-         toast.success('Sign up Successfull');
+         toast.success('Sign up Successfully');
       } catch (error) {
          if (error.message) {
             toast.error('Email Already in Use.');
