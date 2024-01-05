@@ -13,6 +13,7 @@ const Register = ({ handleChange, change, setIsOpen }) => {
    const [loading, setLoading] = useState(false)
    const { createUser, updateUserProfile } = useAuth()
 
+
    const { register, handleSubmit, reset } = useForm();
 
    const onSubmit = async (data) => {

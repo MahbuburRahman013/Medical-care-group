@@ -14,9 +14,38 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import UpNavbar from './UpNavbar';
 import Login from '../pages/Login/Login';
+import { Link } from 'react-router-dom';
+import { Stack } from '@mui/system';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'About us', 'Service', 'Doctor', 'News', 'Contact'];
+
+const navItem = [
+	{
+		route: "Home",
+		pathName: "/"
+	},
+	{
+		route: "About Us",
+		pathName: "/about"
+	},
+	{
+		route: "Services",
+		pathName: "/services"
+	},
+	{
+		route: "Doctor",
+		pathName: "/doctors"
+	},
+	{
+		route: "News",
+		pathName: "/news"
+	},
+	{
+		route: "Contact",
+		pathName: "/contact"
+	},
+];
 
 function Navbar() {
 
@@ -46,18 +75,26 @@ function Navbar() {
 
 
 	return (
-		<div className="sticky top-0 bg-white">
+		<div className="sticky top-0 z-50 bg-white">
 			<UpNavbar></UpNavbar>
-			<Box sx={{ display: 'flex'}}>
+			<Box sx={{ display: 'flex' }}>
 				<CssBaseline />
-				<AppBar sx={{ backgroundColor: '#1F2B6C' , marginTop:'60px'}} component="nav">
+				<AppBar sx={{ backgroundColor: '#1F2B6C', marginTop: { xs: '91px', sm: '60px' } }} component="nav">
 					<Toolbar className='container mx-auto'>
 						<Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-							{navItems.map((item) => (
-								<Button key={item} sx={{ color: '#fff' , marginX:1}}>
-									{item}
-								</Button>
-							))}
+							<Stack
+								direction="row"
+								justifyContent="left"
+								alignItems="center"
+								spacing={3}
+							>
+
+								{navItem.map((item) => (
+									<Link to={item.pathName} key={item.route} className=' hover:text-[#fbfc03]'>
+										{item.route}
+									</Link>
+								))}
+							</Stack>
 						</Box>
 						<IconButton
 							color="inherit"
@@ -73,7 +110,7 @@ function Navbar() {
 						</div>
 
 						<div className="hidden md:block">
-							<Button sx={{ borderRadius: '25px', backgroundColor: '#BFD2F8', color: 'black' }} variant="contained">Contained</Button>
+							<Link to="/appointment" className='rounded-3xl bg-[#BFD2F8] text-black py-2 px-4'>Appointment</Link>
 						</div>
 
 						<div className='ml-10'>
