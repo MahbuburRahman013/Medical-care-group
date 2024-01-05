@@ -75,7 +75,7 @@ function Navbar() {
 
 
 	return (
-		<div className="sticky top-0 bg-white">
+		<div className="sticky top-0 z-50 bg-white">
 			<UpNavbar></UpNavbar>
 			<Box sx={{ display: 'flex' }}>
 				<CssBaseline />
@@ -110,7 +110,7 @@ function Navbar() {
 						</div>
 
 						<div className="hidden md:block">
-							<Button sx={{ borderRadius: '25px', backgroundColor: '#BFD2F8', color: 'black' }} variant="contained">Contained</Button>
+							<Link to="/appointment" className='rounded-3xl bg-[#BFD2F8] text-black py-2 px-4'>Appointment</Link>
 						</div>
 
 						<div className='ml-10'>
