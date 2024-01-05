@@ -3,14 +3,13 @@ import { useEffect } from "react";
 
 const AppointmentForm = () => {
 
-   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+   const { register, handleSubmit, setValue } = useForm();
    const onSubmit = data => console.log(data);
-   console.log(errors);
 
    const getCurrentDate = () => {
       const currentDate = new Date();
       const year = currentDate.getFullYear();
-      const month = `${currentDate.getMonth() + 1}`.padStart(2, '0'); // Month is 0-indexed
+      const month = `${currentDate.getMonth() + 1}`.padStart(2, '0');
       const day = `${currentDate.getDate()}`.padStart(2, '0');
       return `${year}-${month}-${day}`;
    };
