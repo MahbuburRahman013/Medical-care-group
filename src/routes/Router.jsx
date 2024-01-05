@@ -10,6 +10,7 @@ import Contact from '../pages/Contact/Contact';
 import SingleNews from '../pages/News/SingleNews';
 import DashboardLayout from '../layout/DashboardLayout';
 import DashboardHome from '../pages/Dashboard/DashboardHome/DashboardHome';
+import Appointment from '../pages/Appointment/Appointment';
 
 const router = createBrowserRouter([
    {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             path: "/contact",
             element: <Contact />
          },
+         {
+            path: "/appointment",
+            element: <Appointment />
+         }
       ],
    },
    {
