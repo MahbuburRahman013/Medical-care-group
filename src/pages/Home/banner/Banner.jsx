@@ -12,7 +12,7 @@ const Banner = () => {
                     <Button sx={{ borderRadius: '25px', marginTop: '40px', padding: '10px 30px', backgroundColor: '#BFD2F8', color: 'black' }} variant="contained">Our Services</Button>
                 </div>
             </div>
-            <div className="absolute hidden lg:block container mx-auto bottom-[-40px]">
+            <div className="absolute hidden lg:block container left-10 bottom-[-40px]">
                 <BannerCard></BannerCard>
             </div>
         </div>

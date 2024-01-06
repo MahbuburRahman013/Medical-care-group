@@ -18,9 +18,9 @@ import { Link } from 'react-router-dom';
 import { Stack } from '@mui/system';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About us', 'Service', 'Doctor', 'News', 'Contact'];
 
-const navItem = [
+
+const navItems = [
 	{
 		route: "Home",
 		pathName: "/"
@@ -60,15 +60,23 @@ function Navbar() {
 	const drawer = (
 		<Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
 			<List>
-				{navItems.map((item) => (
-					<ListItem key={item} disablePadding>
-						<ListItemButton sx={{ textAlign: 'center' }}>
-							<ListItemText primary={item} />
-						</ListItemButton>
-					</ListItem>
-				))}
+				<Stack
+					direction="column"
+					justifyContent="left"
+					alignItems="center"
+					spacing={3}
+				>
+
+					{navItems.map((item) => (
+						<Link to={item.pathName} key={item.route} className=' hover:text-[#fbfc03]'>
+							{item.route}
+						</Link>
+					))}
+				</Stack>
 			</List>
-			<Button sx={{ borderRadius: '25px', backgroundColor: '#BFD2F8', color: 'black' }} variant="contained">Contained</Button>
+			
+				<Link to="/appointment" className='rounded-3xl bg-[#BFD2F8] text-black py-2 px-4'>Appointment</Link>
+			
 		</Box>
 	);
 
@@ -89,7 +97,7 @@ function Navbar() {
 								spacing={3}
 							>
 
-								{navItem.map((item) => (
+								{navItems.map((item) => (
 									<Link to={item.pathName} key={item.route} className=' hover:text-[#fbfc03]'>
 										{item.route}
 									</Link>
