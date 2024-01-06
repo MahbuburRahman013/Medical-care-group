@@ -4,21 +4,25 @@ import PageBanner from "../../shared/PageBanner/PageBanner";
 import AppointmentForm from "../../shared/AppointmentForm/AppointmentForm";
 import ContactCard from "../../shared/ContactCard/ContactCard";
 import MapBox from "../../shared/MapBox/MapBox";
+import useAllAppointment from "../../hooks/useAllAppointment";
+
+const sheduleHore = [
+   { day: "Monday", time: " 09:00 AM - 07:00 PM" },
+   { day: "TuesDay", time: " 09:00 AM - 07:00 PM" },
+   { day: "Wednesday", time: " 09:00 AM - 07:00 PM" },
+   { day: "Thursday", time: " 09:00 AM - 07:00 PM" },
+   { day: "Friday", time: " 09:00 AM - 07:00 PM" },
+   { day: "Satarday", time: " 09:00 AM - 07:00 PM" },
+   { day: "Sunday", time: "Closed" },
+]
 
 const Appointment = () => {
 
    const location = useLocation()
-   const path = location.pathname.replace("/s", "/ S")
+   const path = location.pathname.replace("/a", "/ A")
 
-   const sheduleHore = [
-      { day: "Monday", time: " 09:00 AM - 07:00 PM" },
-      { day: "TuesDay", time: " 09:00 AM - 07:00 PM" },
-      { day: "Wednesday", time: " 09:00 AM - 07:00 PM" },
-      { day: "Thursday", time: " 09:00 AM - 07:00 PM" },
-      { day: "Friday", time: " 09:00 AM - 07:00 PM" },
-      { day: "Satarday", time: " 09:00 AM - 07:00 PM" },
-      { day: "Sunday", time: "Closed" },
-   ]
+   const { data } = useAllAppointment()
+   console.log(data)
 
    return (
       <>
@@ -26,7 +30,12 @@ const Appointment = () => {
          <div className="max-w-[1100px] mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-5 content-center justify-center items-center my-20 p-3 lg:p-0">
                {/* Appointment Form */}
-               <AppointmentForm />
+               <div className="max-w-[500px]">
+                  <h2 className="text-[32px] font-semibold">Book an Appoointment</h2>
+                  <p className="py-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat scelerisque tortor ornare ornare. Convallis felis vitae tortor augue. Velit nascetur proin massa in. Consequat faucibus porttitor enim et.</p>
+
+                  <AppointmentForm />
+               </div>
 
                {/* Shedule Hour */}
                <div className="flex flex-row max-w-[500px] items-start">
